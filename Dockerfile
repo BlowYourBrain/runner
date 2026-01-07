@@ -21,6 +21,9 @@ WORKDIR /home/runner
 # Установка Android SDK (от root)
 USER root
 RUN mkdir -p $ANDROID_HOME/cmdline-tools \
+    && mkdir -p /home/runner/.gradle \
+    && mkdir -p /opt/android-sdk \
+    && chown -R runner:runner /home/runner /opt/android-sdk \
     && curl -L -o cmdline.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip \
     && unzip cmdline.zip \
     && mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest \
