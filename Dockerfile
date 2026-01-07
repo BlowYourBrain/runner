@@ -43,7 +43,7 @@ WORKDIR /home/runner
 # Установка GitHub Actions Runner
 RUN curl -o actions-runner.tar.gz -L \
     https://github.com/actions/runner/releases/download/v2.316.0/actions-runner-linux-x64-2.316.0.tar.gz \
-    && tar xzf actions-runner.tar.gz \
+    && tar xzf actions-runner.tar.gz -C /opt/runner \
     && rm actions-runner.tar.gz
 
 # Копируем скрипт запуска runner

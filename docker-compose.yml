@@ -10,8 +10,8 @@ services:
     restart: unless-stopped
 
     environment:
-      GITHUB_URL: ${GITHUB_URL}
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_PAT: ${GITHUB_PAT}
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
       ANDROID_HOME: /opt/android-sdk
       ANDROID_SDK_ROOT: /opt/android-sdk
 

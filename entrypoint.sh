@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-if [[ -z "$GITHUB_PAT" || -z "$GITHUB_URL" ]]; then
+if [[ -z "$GITHUB_PAT" || -z "$GITHUB_REPOSITORY" ]]; then
   echo "❌ GITHUB_PAT or GITHUB_URL not set"
   exit 1
 fi
 
-OWNER=$(echo "$GITHUB_URL" | cut -d/ -f1)
+OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d/ -f1)
 REPO=$(echo "$GITHUB_REPOSITORY" | cut -d/ -f2)
 
 echo "🔑 Requesting runner registration token..."
