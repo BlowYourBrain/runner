@@ -1,10 +1,13 @@
+# Базовый образ
 FROM ubuntu:22.04
 
+# Переменные окружения Android
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=$PATH:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools
 
+# Устанавливаем зависимости
 RUN apt-get update && apt-get install -y \
     curl \
     unzip \
@@ -18,28 +21,39 @@ RUN apt-get update && apt-get install -y \
     lib32z1 \
     && rm -rf /var/lib/apt/lists/*
 
+# Создаем пользователя runner
 RUN useradd -m runner && echo "runner ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER runner
 WORKDIR /home/runner
 
-RUN mkdir -p $ANDROID_HOME/cmdline-tools && \
-    curl -o cmdline.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip && \
-    unzip cmdline.zip && \
-    mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest && \
-    rm cmdline.zip
+# Установка Android SDK (от root для прав на /opt)
+USER root
+RUN mkdir -p $ANDROID_HOME/cmdline-tools \
+    && curl -L -o cmdline.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip \
+    && unzip cmdline.zip \
+    && mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest \
+    && rm cmdline.zip
 
-RUN yes | sdkmanager --licenses && \
-    sdkmanager \
-      "platform-tools" \
-      "platforms;android-34" \
-      "build-tools;34.0.0"
+# Согласие с лицензиями и установка платформы
+RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+    "platform-tools" \
+    "platforms;android-34" \
+    "build-tools;34.0.0"
 
+# Переключаемся обратно на пользователя runner
+USER runner
+WORKDIR /home/runner
+
+# Установка GitHub Actions Runner
 RUN curl -o actions-runner.tar.gz -L \
-    https://github.com/actions/runner/releases/download/v2.316.0/actions-runner-linux-x64-2.316.0.tar.gz && \
-    tar xzf actions-runner.tar.gz && \
-    rm actions-runner.tar.gz
+    https://github.com/actions/runner/releases/download/v2.316.0/actions-runner-linux-x64-2.316.0.tar.gz \
+    && tar xzf actions-runner.tar.gz \
+    && rm actions-runner.tar.gz
 
+# Копируем скрипт запуска runner
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+# Запуск
 ENTRYPOINT ["./entrypoint.sh"]
