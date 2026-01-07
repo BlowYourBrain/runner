@@ -9,7 +9,7 @@ ENV PATH=$PATH:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platfo
 
 # Устанавливаем зависимости
 RUN apt-get update && apt-get install -y \
-    curl unzip git ca-certificates sudo openjdk-17-jdk \
+    curl unzip git jq ca-certificates sudo openjdk-17-jdk \
     lib32stdc++6 lib32gcc-s1 lib32ncurses6 lib32z1 \
     && rm -rf /var/lib/apt/lists/*
 
