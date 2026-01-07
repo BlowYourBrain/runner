@@ -26,26 +26,30 @@ RUN mkdir -p $ANDROID_HOME/cmdline-tools \
     && mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest \
     && rm cmdline.zip
 
-# Лицензии и платформы
+# Согласие с лицензиями и установка платформы
 RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
     "platform-tools" \
     "platforms;android-34" \
     "build-tools;34.0.0"
 
-# Возвращаемся на пользователя runner
+# Возвращаемся к пользователю runner
 USER runner
 WORKDIR /home/runner
 
-# GitHub Actions Runner
+# Установка GitHub Actions Runner
 RUN curl -o actions-runner.tar.gz -L \
     https://github.com/actions/runner/releases/download/v2.316.0/actions-runner-linux-x64-2.316.0.tar.gz \
     && tar xzf actions-runner.tar.gz \
     && rm actions-runner.tar.gz
 
-# Скрипт запуска runner
+# Копируем скрипт запуска runner
 COPY entrypoint.sh .
-RUN [ -f entrypoint.sh ] && chmod +x entrypoint.sh || echo "entrypoint.sh not found"
 
-# Запуск
-ENTRYPOINT ["./entrypoint.sh"]
+# Установка прав на выполнение (для надежности через root)
+USER root
+RUN chmod +x entrypoint.sh
+USER runner
+
+# ENTRYPOINT через bash для гарантии запуска
+ENTRYPOINT ["/bin/bash", "./entrypoint.sh"]
