@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  android-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: android-gh-runner:latest
+    container_name: android-gh-runner
+    restart: unless-stopped
+
+    environment:
+      GITHUB_URL: https://github.com/BlowYourBrain/runner
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      ANDROID_HOME: /opt/android-sdk
+      ANDROID_SDK_ROOT: /opt/android-sdk
+
+    volumes:
+      - android-sdk:/opt/android-sdk
+      - gradle-cache:/home/runner/.gradle
+
+volumes:
+  android-sdk:
+  gradle-cache:
