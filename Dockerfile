@@ -37,8 +37,8 @@ RUN curl -L -o cmdline.zip https://dl.google.com/android/repository/commandlinet
 RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
     "platform-tools" \
-    "platforms;android-34" \
-    "build-tools;34.0.0"
+    "platforms;android-35" \
+    "build-tools;35.0.0"
 
 # Установка GitHub Actions Runner (от root для корректных прав)
 USER root
