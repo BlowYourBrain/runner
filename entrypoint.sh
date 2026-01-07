@@ -2,7 +2,7 @@
 set -e
 
 if [[ -z "$GITHUB_PAT" || -z "$GITHUB_URL" ]]; then
-  echo "❌ GITHUB_PAT or GITHUB_REPOSITORY not set"
+  echo "❌ GITHUB_PAT or GITHUB_URL not set"
   exit 1
 fi
 
