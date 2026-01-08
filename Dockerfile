@@ -43,7 +43,7 @@ RUN mkdir -p \
 USER root
 
 RUN curl -L -o /tmp/cmdline.zip \
-        https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip \
+        https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip \
     && unzip /tmp/cmdline.zip -d /opt/android-sdk \
     && mv /opt/android-sdk/cmdline-tools /opt/android-sdk/cmdline-tools-temp \
     && mkdir -p /opt/android-sdk/cmdline-tools/latest \
