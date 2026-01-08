@@ -60,7 +60,8 @@ RUN yes | sdkmanager --licenses
 RUN sdkmanager \
     "platform-tools" \
     "platforms;android-35" \
-    "build-tools;35.0.0"
+    "build-tools;35.0.0" \
+    "build-tools;34.0.0"
 
 # 🔴 КРИТИЧНО: после этого SDK больше НЕ меняется
 RUN chown -R runner:runner /opt/android-sdk /home/runner \
