@@ -53,6 +53,8 @@ RUN curl -L -o /tmp/cmdline.zip \
 # =========================
 # Лицензии + SDK (ТОЛЬКО В IMAGE BUILD)
 # =========================
+RUN sdkmanager --update
+
 RUN yes | sdkmanager --licenses
 
 RUN sdkmanager \
